@@ -28,10 +28,9 @@ app.get("/", (req, res) => {
 app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/api/save-png", (req, res) => {
-  console.log("entré a save")
   const filename = req.body.filename;
   const base64Data = req.body.base64Data.replace(/^data:image\/png;base64,/, "");
-  const filePath = `/quiz/dataviz/files/${filename}`;
+  const filePath = `public/dataviz/${filename}`;
 
   fs.writeFile(filePath, base64Data, "base64", (err) => {
     if (err) {
@@ -39,7 +38,6 @@ app.post("/api/save-png", (req, res) => {
       res.status(500).send("Error saving PNG file");
     } else {
       // Generate QR code with the URL to the saved image
-      const imageUrl = `http://x-data.mx/quiz/dataviz/files/${filename}`;
       console.log("PNG file saved on the server!:(");
       res.status(200).send(imageUrl);
     }
